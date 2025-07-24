@@ -1,32 +1,23 @@
+import { useEffect, useState } from "react";
 import "./App.css";
-import { useState, useEffect } from "react";
 
 function App() {
-  const [leetCodeProblemInfo, setLeetCodeProblemInfo] = useState()
-	useEffect(() => {
-		let interval: number | undefined; 
+  interface Problem {
+    problemText: string
+  }
 
-		const fetchCurrentProblemInfo  = () => {
-			chrome.runtime.sendMessage({
-				type: "get-current-problem"
-			}, (response) => {
-        console.log(response)
-				if (response) {
-					clearInterval(interval)
-					console.log("got problem", response)
-					setLeetCodeProblemInfo(response)
-				}
-			})
-		}
+   const [problem, setProblem] = useState<Problem | null>(null);
 
-		interval = setInterval(() => {
-			fetchCurrentProblemInfo()
-		}, 100);
-
-		return () => {
-			clearInterval(interval)
-		}
-	}, [])
+  useEffect(() => {
+    chrome.runtime.sendMessage({ type: "get-current-problem" }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("Message error:", chrome.runtime.lastError.message);
+        return;
+      }
+      console.log("Current problem state:", response);
+      setProblem(response); 
+    });
+  }, []);
 
   return (
     <div className="popup-container">
@@ -37,7 +28,8 @@ function App() {
 
       <div className="card">
         <p>
-          <strong>Current Problem:</strong> {leetCodeProblemInfo}
+          <strong>Current Problem:</strong>{" "}
+          {problem?.problemText || "Loading..."}
         </p>
         <p>
           <strong>Difficulty:</strong> Easy
