@@ -12,6 +12,7 @@
   margin-bottom: 16px;
 }
 
+
 .logo {
   width: 70px;  
   height: 70px; 
@@ -30,6 +31,11 @@ p {
   margin: 8px 0;
   font-size: 0.95em;
   color: #d1d5db;
+}
+
+.problem-title {
+  font-size: 1.4em;
+  color: white
 }
 
 .header-title {

@@ -3,10 +3,12 @@ import "./App.css";
 
 function App() {
   interface Problem {
-    problemText: string
+    problemText: string;
+    difficultyText: string;
+    titleText: string;
   }
 
-   const [problem, setProblem] = useState<Problem | null>(null);
+  const [problem, setProblem] = useState<Problem | null>(null);
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: "get-current-problem" }, (response) => {
@@ -15,7 +17,7 @@ function App() {
         return;
       }
       console.log("Current problem state:", response);
-      setProblem(response); 
+      setProblem(response);
     });
   }, []);
 
@@ -27,19 +29,24 @@ function App() {
       </div>
 
       <div className="card">
-        <p>
-          <strong>Current Problem:</strong>{" "}
-          {problem?.problemText || "Loading..."}
-        </p>
-        <p>
-          <strong>Difficulty:</strong> Easy
-        </p>
-        <p>
-          <strong>Tags:</strong> Array, Hash Table
-        </p>
+        {problem ? (
+          <>
+            <p>
+              <strong className="problem-title">{problem.titleText}</strong>
+            </p>
+            <p>
+              <strong>Current Problem:</strong> {problem.problemText}
+            </p>
+            <p>
+              <strong>Difficulty:</strong> {problem.difficultyText}
+            </p>
 
-        <button className="btn">Get Hint</button>
-        <button className="btn secondary">Similar Problems</button>
+            <button className="btn">Get Hint</button>
+            <button className="btn secondary">Similar Problems</button>
+          </>
+        ) : (
+          <p className="problem-title">No LeetCode problem was found on this page. Try refreshing.</p>
+        )}
       </div>
     </div>
   );
