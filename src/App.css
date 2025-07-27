@@ -69,3 +69,11 @@ p {
 .btn.secondary:hover {
   background-color: #059669;
 }
+
+.hint-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: #2b2b3d;
+  border-left: 4px solid #3b82f6;
+  border-radius: 4px;
+}
